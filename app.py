@@ -56,60 +56,33 @@ if uploaded_file is not None:
         "pelaku_budidaya",
         "luas_lahan",
         "jumlah_benih",
-        "kode_kec"  # ← ISI: NAMA KECAMATAN (TEKS)
+        "kode_kec"
     ]
 
-    # 1️⃣ Validasi kolom
+    # Validasi kolom
     kolom_hilang = set(kolom_wajib) - set(df.columns)
     if kolom_hilang:
         st.error("❌ Kolom wajib tidak ditemukan:")
         st.write(kolom_hilang)
         st.stop()
 
-    st.write("📄 Data yang diupload:")
-    st.dataframe(df)
-
-    # 2️⃣ Validasi kecamatan
-    df["kode_kec"] = df["kode_kec"].astype(str).str.strip()
-
-    kec_excel = set(df["kode_kec"].unique())
-    kec_model = set(le.classes_)
-
-    kec_tidak_dikenali = kec_excel - kec_model
-    if kec_tidak_dikenali:
-        st.error("❌ Kecamatan tidak dikenali oleh sistem")
-        st.write("Kecamatan bermasalah:")
-        st.write(kec_tidak_dikenali)
-        st.stop()
-
-    # 3️⃣ Validasi numerik
-    kolom_numerik = [
-        "jumlah_komoditas",
-        "pelaku_budidaya",
-        "luas_lahan",
-        "jumlah_benih"
-    ]
-
-    for col in kolom_numerik:
+    # Validasi numerik
+    for col in kolom_wajib:
         if df[col].isnull().any():
             st.error(f"❌ Terdapat nilai kosong pada kolom: {col}")
             st.stop()
+
         if not pd.api.types.is_numeric_dtype(df[col]):
-            st.error(f"❌ Kolom {col} harus berupa angka")
+            st.error(f"❌ Kolom {col} harus berupa ANGKA")
             st.stop()
 
-    # 4️⃣ Encoding + Prediksi
-    df["kode_kec_encoded"] = le.transform(df["kode_kec"])
+    st.write("📄 Data yang diupload:")
+    st.dataframe(df)
 
-    X = df[
-        [
-            "jumlah_komoditas",
-            "pelaku_budidaya",
-            "luas_lahan",
-            "jumlah_benih",
-            "kode_kec_encoded"
-        ]
-    ].astype(float)
+    # =========================
+    # PREDIKSI
+    # =========================
+    X = df[kolom_wajib].astype(float)
 
     X_scaled = scaler_X.transform(X)
     y_scaled = model.predict(X_scaled)
@@ -200,3 +173,4 @@ if submit:
     ax.set_title("Tren Produksi Budidaya")
 
     st.pyplot(fig)
+
