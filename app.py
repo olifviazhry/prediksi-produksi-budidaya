@@ -29,11 +29,72 @@ model, scaler_X, scaler_y, le = load_artifacts()
 # JUDUL
 # =========================
 st.title("🎣🐟 Dashboard Prediksi Hasil Produksi Budidaya")
+
 st.write(
     "Aplikasi ini memprediksi hasil produksi budidaya perikanan "
     "berdasarkan jumlah komoditas, pelaku budidaya, luas lahan, jumlah benih, "
     "dan wilayah kecamatan."
 )
+
+# =========================
+# INFORMASI MODEL
+# =========================
+st.subheader("ℹ️ Informasi Model")
+
+col1, col2 = st.columns(2)
+
+with col1:
+    st.write("**Algoritma**")
+    st.write("Regresi Linear Berganda")
+
+    st.write("**Dataset**")
+    st.write("168 Data")
+
+with col2:
+    st.write("**Periode Data**")
+    st.write("2020–2023")
+
+    st.write("**Validasi Model**")
+    st.write("5-Fold Cross Validation")
+# =========================
+# HASIL EVALUASI MODEL
+# =========================
+st.subheader("📊 Hasil Evaluasi Model")
+
+c1, c2, c3, c4, c5 = st.columns(5)
+
+with c1:
+    st.metric("RMSE", "0.0250")
+
+with c2:
+    st.metric("MSE", "0.0006")
+
+with c3:
+    st.metric("MAE", "0.0130")
+
+with c4:
+    st.metric("MAPE", "0.30%")
+
+with c5:
+    st.metric("R²", "0.929")
+
+st.info(
+    """
+    **Interpretasi Evaluasi Model**
+
+    • RMSE = 0.0250 menunjukkan tingkat kesalahan prediksi rendah.
+
+    • MSE = 0.0006 menunjukkan rata-rata kuadrat error sangat kecil.
+
+    • MAE = 0.0130 menunjukkan rata-rata selisih prediksi terhadap nilai aktual rendah.
+
+    • MAPE = 0.30% menunjukkan tingkat akurasi prediksi sangat baik.
+
+    • R² = 0.929 berarti model mampu menjelaskan sekitar 92,9% variasi hasil produksi budidaya.
+    """
+)
+
+st.divider()
 
 # =====================================================
 # 📂 PREDIKSI DARI FILE EXCEL (NAMA KECAMATAN)
@@ -94,6 +155,8 @@ if uploaded_file is not None:
 
     st.success("✅ Prediksi dari file Excel berhasil")
     st.dataframe(df)
+
+st.divider()
 
 # =====================================================
 # ✍️ INPUT MANUAL (NAMA KECAMATAN)
@@ -174,3 +237,14 @@ if submit:
 
     st.pyplot(fig)
 
+st.divider()
+
+st.caption(
+    """
+    Dashboard Prediksi Hasil Produksi Budidaya Perikanan
+
+    Model : Regresi Linear Berganda
+
+    Dibangun menggunakan Python, Streamlit, dan Scikit-Learn.
+    """
+)
