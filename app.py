@@ -24,18 +24,16 @@ def load_artifacts():
     return model, scaler_X, scaler_y, le
 
 model, scaler_X, scaler_y, le = load_artifacts()
-
 # =========================
 # JUDUL
 # =========================
-st.title("🎣🐟 Dashboard Prediksi Hasil Produksi Budidaya")
+st.title("Dashboard Prediksi Hasil Produksi Budidaya")
 
 st.write(
     "Aplikasi ini memprediksi hasil produksi budidaya perikanan "
     "berdasarkan jumlah komoditas, pelaku budidaya, luas lahan, jumlah benih, "
     "dan wilayah kecamatan."
 )
-
 # =========================
 # INFORMASI MODEL
 # =========================
@@ -77,22 +75,6 @@ with c4:
 
 with c5:
     st.metric("R²", "0.929")
-
-st.info(
-    """
-    **Interpretasi Evaluasi Model**
-
-    • RMSE = 0.0250 menunjukkan tingkat kesalahan prediksi rendah.
-
-    • MSE = 0.0006 menunjukkan rata-rata kuadrat error sangat kecil.
-
-    • MAE = 0.0130 menunjukkan rata-rata selisih prediksi terhadap nilai aktual rendah.
-
-    • MAPE = 0.30% menunjukkan tingkat akurasi prediksi sangat baik.
-
-    • R² = 0.929 berarti model mampu menjelaskan sekitar 92,9% variasi hasil produksi budidaya.
-    """
-)
 
 st.divider()
 
